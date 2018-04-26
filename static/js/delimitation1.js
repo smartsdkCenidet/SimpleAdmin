@@ -32,7 +32,7 @@ var drawControl = new L.Control.Draw({
         },
         polygon:{   
             shapeOptions: {
-                color: '#ff6666'
+                color: '#3498db'
             },        
             showArea: true
         },
@@ -206,6 +206,7 @@ function saveZone(){
 
 
 //ROADS DINAMICOS
+var roadRegistred 
 
 var drawRoads = () =>{
     console.log("ZONEDANI")
@@ -220,23 +221,72 @@ var drawRoads = () =>{
     })
     .then((res) => res.json())
     .then((data) => { 
-        console.log(data.elements)
-
         data.elements.map((way)=>{
             if (way.geometry){
-                console.log(way.tags.name)
+                //
                 let road = L.polyline (convertOSMCoordinates(way.geometry), {
                     color: '#3498db',
-                    weight: 6
+                    weight: 4
                 })
                 .on('click', ()=> {
                     console.log("PREESS")
+                    if (way.tags.name){
+                        console.log(way.tags.name)
+                        $("#roadName").val(way.tags.name);
+                    }else {
+                        $("#roadName").val("");
+                    }
                 })
                 .addTo(map);
-                if (way.tags.name){
-                    road.bindPopup('<a href="#" data-toggle="modal" data-target="#roadModal">Registre this Road</a>').openPopup();
-                }
+                
+                road.bindPopup('<a href="#" data-toggle="modal" data-target="#roadModal">Registre this Road</a>');
+                
+                /*road.on('click', function() {
+                    this.setStyle({
+                        color: '#e74c3c'   //or whatever style you wish to use;
+                    });
+                });*/
+                
+            }
+        })
+    })
+    return;  
 
+}
+
+var drawParkings = () =>{
+    console.log("ZONEDANI")
+
+    var overpassQuery =  buildOverpassApiUrl("parking")
+
+    fetch(overpassQuery, {
+        method: 'GET',
+        headers: {
+            'Access-Control-Allow-Methods':'GET'
+        },
+    })
+    .then((res) => res.json())
+    .then((data) => { 
+        data.elements.map((way)=>{
+            if (way.geometry){
+                //
+                let road = L.polygon (convertOSMCoordinates(way.geometry), {
+                    color: '#2980b9',
+                    weight: 3
+                })
+                .on('click', ()=> {
+                    console.log("PREESS")
+                    if (way.tags.name){
+                        console.log(way.tags.name)
+                        $("#roadName").val(way.tags.name);
+                    }else {
+                        $("#roadName").val("");
+                    }
+                })
+                .addTo(map);
+                
+                road.bindPopup('<a href="#" data-toggle="modal" data-target="#roadModal">Registre this Parking</a>');
+                
                 /*road.on('click', function() {
                     this.setStyle({
                         color: '#e74c3c'   //or whatever style you wish to use;
