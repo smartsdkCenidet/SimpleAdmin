@@ -2,11 +2,7 @@
 // INITIALIZATION OF THE MAP
 var map = L.map("mapid").setView([0, -0], 2);
 
-// LEAFLET STYLE ON THE MAP 
-/*L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-*/
+
 // MAPBOX STYLE ON THE MAP
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -81,7 +77,9 @@ map.on('draw:created', function (e) {
         console.log(JSON.stringify(polygon));
         console.log(polygonCoordinates);
         console.log("Coordenadas  [lat,long] del polígono ");
-        console.log(coordinatesConverted);   
+        console.log(coordinatesConverted);  
+        layer.addTo(map)
+        console.log(layer.getCenter()) 
     }
     if(type === 'polyline'){
         console.log("CREANDO POLILÍNEA");
@@ -203,4 +201,73 @@ function saveZone(){
         }
     })
     return;
+}
+
+
+
+//ROADS DINAMICOS
+
+var drawRoads = () =>{
+    console.log("ZONEDANI")
+
+    var overpassQuery =  buildOverpassApiUrl("highway")
+
+    fetch(overpassQuery, {
+        method: 'GET',
+        headers: {
+            'Access-Control-Allow-Methods':'GET'
+        },
+    })
+    .then((res) => res.json())
+    .then((data) => { 
+        console.log(data.elements)
+
+        data.elements.map((way)=>{
+            if (way.geometry){
+                console.log(way.tags.name)
+                let road = L.polyline (convertOSMCoordinates(way.geometry), {
+                    color: '#3498db',
+                    weight: 6
+                })
+                .on('click', ()=> {
+                    console.log("PREESS")
+                })
+                .addTo(map);
+                if (way.tags.name){
+                    road.bindPopup('<a href="#" data-toggle="modal" data-target="#roadModal">Registre this Road</a>').openPopup();
+                }
+
+                /*road.on('click', function() {
+                    this.setStyle({
+                        color: '#e74c3c'   //or whatever style you wish to use;
+                    });
+                });*/
+                
+            }
+        })
+    })
+    return;  
+
+}
+
+var buildOverpassApiUrl =  (overpassQuery, coord) =>  {
+    var bounds =map.getBounds().getSouth() + ',' + map.getBounds().getWest() + ',' + map.getBounds().getNorth() + ',' + map.getBounds().getEast();
+    //bounds = coord
+    //var nodeQuery = 'node[' + overpassQuery + '](' + bounds + ');';
+    var wayQuery = 'way[' + overpassQuery + '](' + bounds + ');';
+    //var relationQuery = 'relation[' + overpassQuery + '](' + bounds + ');';
+   
+    var query = '?data=[out:json][timeout:15];('  + wayQuery  + ');out body geom; out skel qt;';
+    var baseUrl = 'https://overpass-api.de/api/interpreter';
+    var resultUrl = baseUrl + query;
+    console.log(resultUrl)
+    return resultUrl;
+}
+
+var convertOSMCoordinates = (coords) =>{
+    var temp = []
+    coords.map((coor)=>{
+        temp.push([coor.lat, coor.lon])
+    })
+    return temp
 }

@@ -61,7 +61,10 @@
                     </div>  
                     <div class="col-5">
                         <button type="button" class="btn btn-outline-danger col-12" onclick="clearAddress()">Clear Address</button>
-                    </div>      
+                    </div>   
+                    <div class="col-12">
+                        <button type="button" class="btn btn-outline-danger col-12" onclick="drawRoads()">Draw Roads</button>
+                    </div>        
                 </div> 
                 <!-- End Address's Zone-->
                 <!-- Description Input-->
@@ -78,6 +81,8 @@
                     <div class="col-6">
                         <button type="button" id="query" onclick="clearInputsZone()" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
                     </div>
+
+                    
                 </div>
             </form>
             <br>
@@ -91,3 +96,47 @@
         <br>
     </div>
 </div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="roadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Registre Road</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="GET">
+                <div class="form-group">
+                    <label for="zoneName">  <i class="far fa-map"></i>  Road name: </label>
+                    <input type="text" name="roadName" id="zoneName" class="form-control text-center">
+                </div>
+                <div class="form-group">
+                    <label for="totalLaneNumber">  <i class="far fa-map"></i>  Total Lane Number: : </label>
+                    <input type="number" name="totalLaneNumber" id="totalLaneNumber" class="form-control text-center">
+                </div>
+                <div class="form-group">
+                        <label for="maximumAllowedSpeed">  <i class="far fa-map"></i>  Maximum Allowed Speed:  </label>
+                        <input type="number" name="maximumAllowedSpeed" id="maximumAllowedSpeed" class="form-control text-center">
+                    </div>
+                <div class="form-group">
+                    <label for="minimumAllowedSpeed">  <i class="far fa-map"></i>  Maximum Allowed Speed:  </label>
+                    <input type="number" name="minimumAllowedSpeed" id="minimumAllowedSpeed" class="form-control text-center">
+                </div>
+                <div class="form-group">
+                    <label for="width">  <i class="far fa-map"></i>  Width:  </label>
+                    <input type="number" name="width" id="width" class="form-control text-center">
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save Road</button>
+        </div>
+      </div>
+    </div>
+  </div>
