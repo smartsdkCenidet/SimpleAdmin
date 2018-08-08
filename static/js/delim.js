@@ -1,16 +1,15 @@
 
 // INITIALIZATION OF THE MAP
-var map = L.map("mapid").setView([0, -0], 2);
+var map = L.map("mapid", {fullscreenControl: true}).setView([0, -0], 2);
 
-
-// MAPBOX STYLE ON THE MAP
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 20,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA'
+var roadMutant = L.gridLayer.googleMutant({
+    maxZoom: 22,
+    type:'roadmap'
 }).addTo(map);
 
+//var fsControl = new L.Control.FullScreen();
+		// add fullscreen control to the map
+//		map.addControl(fsControl);
 //GLOBAL VARIABLES 
 var coordinatesConverted = []; 
 var polylineArrayCoordinates = [];
@@ -24,32 +23,44 @@ map.addLayer(editableLayers);
 var drawControl = new L.Control.Draw({
     position: 'topleft',
     draw: {
-        marker: {
-          icon: L.icon({
-            iconUrl: '../static/css/images/marker-icon.png',
-            shadowUrl: '../static/css/images/marker-shadow.png'
-          })
-        },
         polygon:{   
             shapeOptions: {
                 color: '#3498db'
             },        
             showArea: true
         },
-        polyline: {
-            shapeOptions: {
-                color: '#008B8B',
-                weight: 8
-            }
-        },
+        marker : false,
+        polyline : false,
+        rectangle : false,
         circle: false,
         circlemarker: false
     },
     edit: {
-        featureGroup: editableLayers, //REQUIRED!!
-        edit: false
+        featureGroup: editableLayers,
+        poly: {
+            allowIntersection: false
+        }
     }
 });
+
+var drawControl2 = new L.Control.Draw({
+    position: 'topleft',
+    draw: {
+        polygon:false,
+        marker : false,
+        polyline : false,
+        rectangle : false,
+        circle: false,
+        circlemarker: false
+    },
+    edit: {
+        featureGroup: editableLayers,
+        poly: {
+            allowIntersection: false
+        }
+    }
+});
+
 map.addControl(drawControl);
 
 //FUNCTION TO CONTROLS THE DRAWING OF A SHAPE.
@@ -77,9 +88,15 @@ map.on('draw:created', function (e) {
         console.log(JSON.stringify(polygon));
         console.log(polygonCoordinates);
         console.log("Coordenadas  [lat,long] del polígono ");
-        console.log(coordinatesConverted);  
+        console.log(coordinatesConverted.join(";"));  
         layer.addTo(map)
+        map.removeControl(drawControl);
+        map.addControl(drawControl2);
         console.log(layer.getCenter()) 
+        console.log(layer.getCenter().lat + "," + layer.getCenter().lng) 
+        pointMap[0] = layer.getCenter().lat;
+        pointMap[1] = layer.getCenter().lng;
+
     }
     if(type === 'polyline'){
         console.log("CREANDO POLILÍNEA");
@@ -98,7 +115,33 @@ map.on('draw:created', function (e) {
    editableLayers.addLayer(layer);
    //drawnItems.addLayer(layer);
 });
-
+map.on('draw:edited', function (e) {
+    var layers = e.layers;
+    layers.eachLayer(function (layer) {
+        var polygon = layer.toGeoJSON();
+        var polygonCoordinates = polygon['geometry']['coordinates'];
+        //CONVERT COORDINATES [LON,LAT] GeoJSON IN [LAT,LON] COORDINATES.
+        coordinatesConverted = [];
+        for(let i=0; i<polygonCoordinates.length;i++){
+          for(let j=0; j<polygonCoordinates[i].length;j++){
+            coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
+          }
+        }
+        console.log(JSON.stringify(polygon));
+        console.log(polygonCoordinates);
+        console.log("Coordenadas  [lat,long] del polígono ");
+        console.log(coordinatesConverted.join(";")); 
+        var center = layer.getCenter();
+        console.log(center.toString()) 
+        pointMap[0] = layer.getCenter().lat;
+        pointMap[1] = layer.getCenter().lng;
+        
+    });
+});
+map.on('draw:deleted', function (e) {
+    map.removeControl(drawControl2);
+    map.addControl(drawControl);
+});
 //FUNCTION TO SEARCH THE ADDRESS SPECIFIED.
 function searchAddress(){
     //REQUEST GOOGLE GEOCODE API SERVICE
