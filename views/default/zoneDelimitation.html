@@ -1,0 +1,103 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<link rel="stylesheet" href="{{=URL('static','css/estilos.css')}}"/>
+<!-- LEAFLET BLOCK -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKylGqXGF6dkieX9tcSsneA18xX-tAROw" async defer></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+    <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
+   
+<script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+<!-- END LEAFLET BLOCK-->
+{{end}} 
+
+{{block page_js}}
+<script src="{{=URL('static','js/zoneDelimitations.js')}}"></script>
+{{end}}
+
+{{block header}}
+<center style="background-color: #333; color:white; padding:30px">
+  <h1> Maps Application </h1>
+</center>
+{{end}}
+
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="{{=URL('default','index')}}">User Devices</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{=URL('default','alerts')}}">Alerts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{=URL('default','zoneDelimitation')}}">Zone Delimitation</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{=URL('default','parkingDelimitation')}}">Parking Delimitation</a>
+      </li>
+</ul>
+<br>
+<div class="row">
+    <div class="col-sm-4 card">
+        <div class="form-group" id="FormGroup1">
+            <div class="card-header">
+                <h4 class="text-center"> Zones Delimitation</h4>
+            </div>
+            <form method="GET" action="javascript:void(0);">
+                <!-- Zone name-->
+                <br>
+                <div class="form-group">
+                    <label for="zoneName">  <i class="far fa-map"></i>  Zone name: </label>
+                    <input type="text" name="zoneName" id="zoneName" class="form-control text-center">
+                </div>
+
+                <!-- Address's Zone -->
+                <div class="form-group">
+                    <label for="zoneAddress"><i class="fas fa-map-marker-alt"></i>  Address's Zone: </label>
+                    <textarea class="form-control text-center" id="zoneAddress" placeholder="Insert the address of the zone" required rows="2"></textarea>
+                </div>  
+                <div class="form-group row">   
+                    <div class="col-7">
+                        <button type="button" class="btn btn-outline-info col-12" onclick="searchAddress()">Search Address on Map</button>
+                    </div>  
+                    <div class="col-5">
+                        <button type="button" class="btn btn-outline-danger col-12" onclick="clearAddress()">Clear Address</button>
+                    </div> 
+                </div> 
+                
+                <!-- End Address's Zone-->
+                <!-- Description Input-->
+                <div class="form-group basic-textarea">
+                    <label for="zoneDescription"> <i class="fas fa-info-circle"></i>  Zone Description: </label>
+                    <textarea class="form-control text-center" id="zoneDescription" placeholder="Brief description of the zone" required rows="2"></textarea>
+                </div>  
+                <!-- End Description Input-->
+                <br>
+                <div class="form-group row">   
+                    <div class="col-6">
+                        <button type="button" id="query" onclick="saveZone()" class="col-12 btn btn-success btn-rounded text-center "> Save </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" id="query" onclick="clearInputsZone()" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
+                    </div>
+                </div>
+            </form>
+            <br>
+        </div>
+    </div>
+    
+
+    <div class="col-sm-8">
+        <div id="mapid">
+        </div>
+    </div>
+</div>
+
+  
+<script>
+    var smartService = '{{=smartService}}';
+</script>

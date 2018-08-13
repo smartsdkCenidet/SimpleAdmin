@@ -53,10 +53,13 @@ def download():
     return response.download(request, db)
 
 def index():
-    return dict(message = T('Hello'))
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
 
 def alerts():
-    return dict(message = T('Hello'))
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
 
-def delimitation():
-    return dict(message = T('Hello'))
+def zoneDelimitation():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def parkingDelimitation():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
