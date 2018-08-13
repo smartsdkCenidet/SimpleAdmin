@@ -24,8 +24,10 @@ var coordinatesConverted = [];
 var polylineArrayCoordinates = [];
 var pointMap = [];
 var idZoneSelected;
+var parkingSelected;
 var editableLayers = new L.FeatureGroup();
 var allZones = [];
+var allParkings = [];
 
 map.addLayer(editableLayers);
 
@@ -36,7 +38,7 @@ var drawControl = new L.Control.Draw({
         marker: false,
         polyline:{   
             shapeOptions: {
-                color: '#3498db'
+                color: '#2ecc71'
             },        
             showArea: true
         },
@@ -100,8 +102,6 @@ map.on('draw:edited', function (e) {
             coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
           }
         }
-        pointMap[0] = layer.getCenter().lat;
-        pointMap[1] = layer.getCenter().lng;
     });
 });
 
@@ -184,9 +184,29 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
                 text: element['name']
             })); 
             allZones[element['idZone']] = element;
+            
         });
     }
 });
+
+function getParkings (zone) {
+    //GET ALL PARKING REGISTERED
+    $.get(`${smartService}/api/parking?status=1&areaServed=${zone}`, function(data){
+        if(data.length===0){
+            console.log("No se encontraron campus ");
+        }
+        else{
+            campus = data;
+            campus.forEach(element => {
+                $('#parkinglist').append($('<option>', {
+                    value: element['idOffStreetParking'],
+                    text: element['name']
+                })); 
+                allParkings[element['idOffStreetParking']] = element;
+            });
+        }
+    });
+}
 
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#zonelist').change(function() {
@@ -196,4 +216,14 @@ $('#zonelist').change(function() {
     zoneLocation = zoneSelected['location'];
     map.setView(new L.LatLng(zoneSelected['centerPoint'][0], zoneSelected['centerPoint'][1]), 18);
     polyline = L.polyline( zoneLocation, {color: '#ff6666'}).addTo(map);
+    getParkings(idZone);
+});
+
+//SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
+$('#parkinglist').change(function() {
+    let idParking = $(this).val()
+    //GET ALL INFORMATION OF A SPECIFIC CAMPUS
+    parkingSelected = allParkings[idParking]
+    parkingLocation = parkingSelected['location'];
+    polyline = L.polyline( parkingLocation, {color: '#3498db'}).addTo(map);
 });

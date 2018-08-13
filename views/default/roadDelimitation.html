@@ -34,52 +34,94 @@
       <a class="nav-link" href="{{=URL('default','alerts')}}">Alerts</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{=URL('default','zoneDelimitation')}}">Zone Delimitation</a>
+        <a class="nav-link" href="{{=URL('default','zoneDelimitation')}}">Zone Delimitation</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{=URL('default','parkingDelimitation')}}">Parking Delimitation</a>
       </li>
 </ul>
 <br>
+
 <div class="row">
     <div class="col-sm-4 card">
         <div class="form-group" id="FormGroup1">
             <div class="card-header">
-                <h4 class="text-center"> Roads Delimitation</h4>
+                <h4 class="text-center"> Road Delimitation</h4>
             </div>
             <form method="GET" action="javascript:void(0);">
                 <!-- Zone name-->
-                <br>
                 <div class="form-group">
-                    <label for="zoneName">  <i class="far fa-map"></i>  Road name: </label>
-                    <input type="text" name="zoneName" id="zoneName" class="form-control text-center">
+                    <label for="zonelist"> <i class="far fa-map"></i> Select Zone: </label>
+                    <select id="zonelist" name="zonelist" class="form-control">
+                      <option value="no" disabled selected>Select an option</option>
+                    </select>
+                </div>
+                <!-- Parking name-->
+                <fieldset disabled>
+                    <div class="form-group" >
+                        <label for="parkinglist"> <i class="far fa-map"></i> Select Parking: </label>
+                        <select id="parkinglist" name="parkinglist" class="form-control">
+                        <option value="any" selected>Any Parking</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                
+                <div class="form-group">
+                    <label for="name">  <i class="far fa-map"></i>  Name: </label>
+                    <input type="text" name="name" id="name" class="form-control text-center">
                 </div>
 
-                <!-- Address's Zone -->
-                <div class="form-group">
-                    <label for="zoneAddress"><i class="fas fa-map-marker-alt"></i>  Address's Zone: </label>
-                    <textarea class="form-control text-center" id="zoneAddress" placeholder="Insert the address of the zone" required rows="2"></textarea>
-                </div>  
-                <div class="form-group row">   
-                    <div class="col-7">
-                        <button type="button" class="btn btn-outline-info col-12" onclick="searchAddress()">Search Address on Map</button>
-                    </div>  
-                    <div class="col-5">
-                        <button type="button" class="btn btn-outline-danger col-12" onclick="clearAddress()">Clear Address</button>
-                    </div> 
-                </div> 
-                
-                <!-- End Address's Zone-->
                 <!-- Description Input-->
                 <div class="form-group basic-textarea">
-                    <label for="zoneDescription"> <i class="fas fa-info-circle"></i>  Zone Description: </label>
-                    <textarea class="form-control text-center" id="zoneDescription" placeholder="Brief description of the zone" required rows="2"></textarea>
+                    <label for="description"> <i class="fas fa-info-circle"></i>  Description: </label>
+                    <textarea class="form-control text-center" id="description" placeholder="Brief description of the zone" required rows="2"></textarea>
                 </div>  
                 <!-- End Description Input-->
+
+                <label > <i class="far fa-map"></i> Speed Limits: </label>
+                <div class="form-group container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="max">  Maximum: </label>
+                            <input type="number" name="max" id="max" class="form-control text-center">
+                        </div>
+                        <div class="col-sm">
+                            <label for="min"> Minimum: </label>
+                            <input type="number" name="min" id="min" class="form-control text-center">
+                        </div>
+                    </div>
+                </div>
+
+                <label > <i class="far fa-map"></i> LaneUsage: </label>
+                <div class="form-group container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="forwardCheck">
+                                <label class="form-check-label" for="forwardCheck">
+                                    Forward
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="backwardCheck">
+                                <label class="form-check-label" for="backwardCheck">
+                                    Backward
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="width">  <i class="far fa-map"></i> Width: </label>
+                    <input type="number" name="width" id="width" class="form-control text-center">
+                </div>
                 <br>
                 <div class="form-group row">   
                     <div class="col-6">
-                        <button type="button" id="save" class="col-12 btn btn-success btn-rounded text-center "> Save </button>
+                        <button type="button" id="save"  class="col-12 btn btn-success btn-rounded text-center "> Save </button>
                     </div>
                     <div class="col-6">
                         <button type="button" id="cancel" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
