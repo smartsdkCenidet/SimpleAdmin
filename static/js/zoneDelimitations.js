@@ -1,7 +1,5 @@
 
-
-console.log(smartService)
-// INITIALIZATION OF THE MAP
+// // INITIALIZATION OF THE MAP
 var map = L.map("mapid", {fullscreenControl: true}).setView([0, -0], 2);
 
 var roadMutant = L.gridLayer.googleMutant({
@@ -14,11 +12,6 @@ var hybridMutant = L.gridLayer.googleMutant({
     type:'hybrid'
 });
 
-var coordinatesConverted = []; 
-var polylineArrayCoordinates = [];
-var pointMap = [];
-var idZoneSelected;
-var editableLayers = new L.FeatureGroup();
 
 L.control.layers({
     StreetsMap: roadMutant,
@@ -26,54 +19,57 @@ L.control.layers({
 }, {}, {
     collapsed: false
 }).addTo(map);
-console.log("init")
+
+//GLOBAL VARIABLES 
+var coordinatesConverted = []; 
+var polylineArrayCoordinates = [];
+var pointMap = [];
+var idZoneSelected;
+var editableLayers = new L.FeatureGroup();
+
+map.addLayer(editableLayers);
+
 //DRAW CONTROLS OF MAP
 var drawControl = new L.Control.Draw({
     position: 'topleft',
     draw: {
+        marker: false,
         polygon:{   
             shapeOptions: {
-                color: '#3498db'
+                color: '#ff6666'
             },        
             showArea: true
         },
-        marker : false,
-        polyline : false,
-        rectangle : false,
+        polyline: false,
         circle: false,
-        circlemarker: false
+        circlemarker: false,
+        rectangle : false
     },
     edit: {
-        featureGroup: editableLayers,
-        poly: {
-            allowIntersection: false
-        }
+        featureGroup: editableLayers, //REQUIRED!!
     }
 });
+map.addControl(drawControl);
 
 var drawControl2 = new L.Control.Draw({
     position: 'topleft',
     draw: {
+        marker: false,
         polygon:false,
-        marker : false,
-        polyline : false,
-        rectangle : false,
+        polyline: false,
         circle: false,
-        circlemarker: false
+        circlemarker: false,
+        rectangle : false
     },
     edit: {
-        featureGroup: editableLayers,
-        poly: {
-            allowIntersection: false
-        }
+        featureGroup: editableLayers, //REQUIRED!!
+
     }
 });
-
-map.addControl(drawControl);
-
 //FUNCTION TO CONTROLS THE DRAWING OF A SHAPE.
 map.on('draw:created', function (e) {
    var type = e.layerType;
+   console.log(type);
    var layer = e.layer;
     if (type === 'polygon') {
         console.log("CREANDO POLÍGONO");
@@ -86,17 +82,14 @@ map.on('draw:created', function (e) {
             coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
           }
         }
-        layer.addTo(map)
         map.removeControl(drawControl);
-        map.addControl(drawControl2);
+        map.addControl(drawControl2);   
+        editableLayers.addLayer(layer);
         pointMap[0] = layer.getCenter().lat;
         pointMap[1] = layer.getCenter().lng;
-
     }
-   // Do whatever else you need to. (save to db; add to map etc)
-   editableLayers.addLayer(layer);
-   //drawnItems.addLayer(layer);
 });
+
 map.on('draw:edited', function (e) {
     var layers = e.layers;
     layers.eachLayer(function (layer) {
@@ -109,17 +102,16 @@ map.on('draw:edited', function (e) {
             coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
           }
         }
-        var center = layer.getCenter();
-        console.log(center.toString()) 
         pointMap[0] = layer.getCenter().lat;
         pointMap[1] = layer.getCenter().lng;
-        
     });
 });
+
 map.on('draw:deleted', function (e) {
     map.removeControl(drawControl2);
     map.addControl(drawControl);
 });
+
 //FUNCTION TO SEARCH THE ADDRESS SPECIFIED.
 function searchAddress(){
     //REQUEST GOOGLE GEOCODE API SERVICE
@@ -141,7 +133,7 @@ function clearAddress(){
     return;
 }
 //FUNCTION TO CLEAR THE ALL THE INPUTS OF ZONE  
-function clearInputsZone(){
+function clear(){
     $("#zoneName").val("");
     $("#zoneAddress").val("");    
     $('select[name=zoneCategories]').val("select an option");
@@ -150,8 +142,10 @@ function clearInputsZone(){
     return;
 }
 
+$("#cancel").click(clear);
+
 // FUNCTION TO SAVE THE ZONE INFORMATION
-function saveZone(){
+$("#save").click(()=> {
     let zone = {
         name: $("#zoneName").val(),
         address:  $("#zoneAddress").val(),
@@ -170,14 +164,14 @@ function saveZone(){
     .then((respuesta) => {
         if(respuesta.status != 201){
             alert("An error has ocurred to save the subzone entity");
-            clearInputsZone();
+            clear();
         }
         else{
             console.log(respuesta);
             alert("Zone save successfully");
-            clearInputsZone();
+            clear();
         }
     })
     return;
-}
+});
 
