@@ -34,13 +34,13 @@ var drawControl = new L.Control.Draw({
     position: 'topleft',
     draw: {
         marker: false,
-        polygon:{   
+        polyline:{   
             shapeOptions: {
                 color: '#3498db'
             },        
             showArea: true
         },
-        polyline: false,
+        polygon: false,
         circle: false,
         circlemarker: false,
         rectangle : false
@@ -71,7 +71,7 @@ map.on('draw:created', function (e) {
    var type = e.layerType;
    console.log(type);
    var layer = e.layer;
-    if (type === 'polygon') {
+    if (type === 'polyline') {
         console.log("CREANDO POLÍGONO");
         var polygon = layer.toGeoJSON();
         var polygonCoordinates = polygon['geometry']['coordinates'];
@@ -85,8 +85,6 @@ map.on('draw:created', function (e) {
         map.removeControl(drawControl);
         map.addControl(drawControl2);   
         editableLayers.addLayer(layer);
-        pointMap[0] = layer.getCenter().lat;
-        pointMap[1] = layer.getCenter().lng;
     }
 });
 

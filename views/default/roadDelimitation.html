@@ -17,7 +17,7 @@
 {{end}} 
 
 {{block page_js}}
-<script src="{{=URL('static','js/zoneDelimitations.js')}}"></script>
+<script src="{{=URL('static','js/roadDelimitation.js')}}"></script>
 {{end}}
 
 {{block header}}
@@ -45,13 +45,13 @@
     <div class="col-sm-4 card">
         <div class="form-group" id="FormGroup1">
             <div class="card-header">
-                <h4 class="text-center"> Zones Delimitation</h4>
+                <h4 class="text-center"> Roads Delimitation</h4>
             </div>
             <form method="GET" action="javascript:void(0);">
                 <!-- Zone name-->
                 <br>
                 <div class="form-group">
-                    <label for="zoneName">  <i class="far fa-map"></i>  Zone name: </label>
+                    <label for="zoneName">  <i class="far fa-map"></i>  Road name: </label>
                     <input type="text" name="zoneName" id="zoneName" class="form-control text-center">
                 </div>
 
