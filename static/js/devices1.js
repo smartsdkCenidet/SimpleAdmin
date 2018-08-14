@@ -46,7 +46,6 @@ $('select[name=optionsView]').change(function() {
     else if(value === ""){
         alert("Select an option view");
     }
-    console.log($(this).val())
 });
 
 L.MakiMarkers.accessToken = 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA';
@@ -108,7 +107,6 @@ $('#zonelist1').change(function() {
             console.log("No se encontró información del campus");
         }
         else{
-            console.log(data);
             zoneLocation = data['location'];
             map.setView(new L.LatLng(data['centerPoint'][0], data['centerPoint'][1]), 18);
             polyline = L.polyline( data['location'], {color: '#ff6666'}).addTo(map);
@@ -120,27 +118,16 @@ function searching1(){
     //GET DATE AND HOUR FROM INPUTS
     tempDate = $("#dateInput").val();
     date = tempDate.substring(0,tempDate.length-1)
-    console.log(date);
     hour = $('#timeInput').val();
-    console.log(hour);
     //CONCATENATE DATE AND TIME
     dateTime = date+"T"+hour+":00";
-    console.log(dateTime);
-    
     dateUTC = new Date(dateTime).toISOString();
     //dateUTC  = moment.utc(dateTime).format()
-    //DATE UTC
-    console.log(dateUTC);
     //ARRAY DATETIME
     dateTimeSplit = dateUTC.split("T");
-    console.log(dateTimeSplit);
-
     timeHour = dateTimeSplit[1].substring(0,2);
-    console.log(timeHour);
-
     //PHONE NUMBER FORM INPUT
     phonenumber = $('#phonenumber-countrycode').val()+$('#phonenumber-input').val();
-    console.log(phonenumber);
     searchUserInfo(phonenumber);
     return;
 }
@@ -155,22 +142,17 @@ function searchUser(userData){
             console.log(data);
             let searchUserinCampus = searchingUserInCampus(data[0]['location']);
             searchUserinCampus.then(function(result) {
-                console.log("here results");
-                console.log(result) //will log results.
                 if(result){
                    showMap(data[0]['location'], data);
                 }
                 else{
                     alert("El usuario: "+userData[0]['firstName']+" no se encontró en la zona  en la fecha y hora especificada: "+date+" "+hour+" hours");
-                    console.log("El usuario: "+userData[0]['firstName']+" no se encontró en la zona en la fecha y hora especificada: " +date+" "+hour+" hours");
                 }    
             })
         }
     }); 
 }
 async function searchingUserInCampus(locationCoordinates){
-    console.log(locationCoordinates)
-    console.log(zoneLocation)
     let Point = locationCoordinates
     let Polygon = zoneLocation
     x = Point[0]
@@ -205,7 +187,6 @@ function searchUserInfo(phoneNumber){
     })
     .then((res) => res.json())
     .then((data)=> {
-        console.dir(data)
         if(data){
             searchUser(data);
         }
@@ -240,7 +221,6 @@ function showMap(location, data){
     })
     .then((res) => res.json())
     .then((dataUser)=> {
-        console.dir(dataUser)
         if(dataUser){
             markerLayer.addTo(map);
             marker = L.marker(location, {
@@ -253,7 +233,6 @@ function showMap(location, data){
             .bindPopup('ID Device: '+data[0]['entity_id']+'<br> Owner ID: '+data[0]['owner']+'<br> DateTime: '+dateFormated+'<br> Name User: '+dataUser[0]['firstName']+ ' '+dataUser[0]['lastName']+'<br> Phone Number: +'+dataUser[0]['phoneNumber'])
             .addTo(markerLayer)
             .openPopup()
-            console.log("uno")
         }
     })
     .catch((error)=>{
