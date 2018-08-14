@@ -170,7 +170,6 @@ function save () {
     .then((respuesta) => {
         if(respuesta.status != 201){
             alert("An error has ocurred to save the subzone entity");
-            clear();
         }
         else{
             console.log(respuesta);

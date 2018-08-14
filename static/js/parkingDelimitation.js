@@ -1,3 +1,21 @@
+ //GLOBAL VARIABLES 
+var coordinatesConverted = []; 
+var polylineArrayCoordinates = [];
+var pointMap = [];
+var idZoneSelected;
+var editableLayers = new L.FeatureGroup();
+var allZones = [];
+
+$("#alert").hide();
+$("#form").submit(function(event){
+    if(coordinatesConverted.length <= 0){
+        $("#alert").show();
+    }else{
+        $("#alert").hide();
+    }
+    save();
+    event.preventDefault();
+});
 // // INITIALIZATION OF THE MAP
 var map = L.map("mapid", {fullscreenControl: true}).setView([0, -0], 2);
 
@@ -19,13 +37,7 @@ L.control.layers({
     collapsed: false
 }).addTo(map);
 
-//GLOBAL VARIABLES 
-var coordinatesConverted = []; 
-var polylineArrayCoordinates = [];
-var pointMap = [];
-var idZoneSelected;
-var editableLayers = new L.FeatureGroup();
-var allZones = [];
+
 
 map.addLayer(editableLayers);
 
@@ -112,7 +124,7 @@ map.on('draw:deleted', function (e) {
     map.addControl(drawControl);
 });
 
-$("#save").click(()=> {
+function save () {
 
     var category = [];
     if ($("#privateCheck").is(':checked')){
@@ -147,7 +159,6 @@ $("#save").click(()=> {
     .then((respuesta) => {
         if(respuesta.status != 201){
             alert("An error has ocurred to save the subzone entity");
-            clear();
         }
         else{
             console.log(respuesta);
@@ -156,7 +167,7 @@ $("#save").click(()=> {
         }
     })
     return;
-});
+}
 
 $("#cancel").click(clear);
 
