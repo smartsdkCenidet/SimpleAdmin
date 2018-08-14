@@ -50,7 +50,7 @@ $('#alerts-visualization').change(function() {
     map.removeLayer(markerLayer)
 })
 function centerMap(value, category){
-    fetch("https://smartsecurity-webservice.herokuapp.com/api/"+category+"/"+value, {
+    fetch(`${smartService}/api/${category}/${value}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET'
@@ -75,7 +75,7 @@ function showZones(zones){
     }
 }
 function searchZones(){
-    fetch("https://smartsecurity-webservice.herokuapp.com/api/zone", {
+    fetch(`${smartService}/api/zone`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, OPTIONS'
@@ -102,7 +102,7 @@ function queryAlerts(){
 function getAlerts(alertsVisualization, category, value){
     markerLayer.clearLayers();
     map.removeLayer(markerLayer)
-    fetch("https://smartsecurity-webservice.herokuapp.com/service/alerts/"+category+"/"+alertsVisualization+"/"+value, {
+    fetch(`${smartService}/service/alerts/${category}/${alertsVisualization}/${value}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, OPTIONS'
