@@ -4,7 +4,7 @@
 $('#zonelist2').change(function() {
     let idZone = $(this).val()
     //GET ALL INFORMATION OF A SPECIFIC CAMPUS
-    $.get(`${smarService}/api/zone/${idZone}`, function(data){
+    $.get(`${smartService}/api/zone/${idZone}?status=1`, function(data){
         if(data.length===0){
             console.log("No se encontró información del campus");
         }
@@ -21,7 +21,7 @@ function showDeviceOnMap(dataDevice){
     let locationTemp = dataDevice[0]['location'].split(",")
     map.setView(new L.LatLng(Number(locationTemp[0]), Number(locationTemp[1])), 19);
     polyline = L.polyline(zoneLocation).addTo(map);
-    fetch(`${smarService}/api/user?id=${dataDevice[0]['owner']}`, {
+    fetch(`${smartService}/api/user?id=${dataDevice[0]['owner']}&status=1`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
@@ -49,7 +49,7 @@ function showDeviceOnMap(dataDevice){
 }
 function searching2(){
     let phone = $('#phonenumber-countrycode').val()+$('#input-search2').val();
-    fetch(`${smarService}/service/devices/zone/${$("#zonelist2").val()}/owner?phoneNumber=${phone}`, {
+    fetch(`${smartService}/service/devices/zone/${$("#zonelist2").val()}/owner?phoneNumber=${phone}&status=1`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
