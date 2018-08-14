@@ -133,12 +133,8 @@ function clearAddress(){
     return;
 }
 //FUNCTION TO CLEAR THE ALL THE INPUTS OF ZONE  
-function clear(){
-    $("#zoneName").val("");
-    $("#zoneAddress").val("");    
-    $('select[name=zoneCategories]').val("select an option");
-    $('#zoneDescription').val("");
-    map.setView(new L.LatLng(0,0), 2);
+function clear () {
+    location.reload(true);
     return;
 }
 

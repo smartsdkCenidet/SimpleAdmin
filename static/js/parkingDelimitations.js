@@ -161,14 +161,7 @@ $("#save").click(()=> {
 $("#cancel").click(clear);
 
 function clear () {
-    $("#name").val("");  
-    $('select[name=zonelist]').val("no");
-    $("#privateCheck").prop('checked', false);
-    $("#employeesCheck").prop('checked', false);
-    $("#visitorsCheck").prop('checked', false);
-    $("#studentsCheck").prop('checked', false);
-    $('#description').val("");
-    map.setView(new L.LatLng(0,0), 2);
+    location.reload(true);
     return;
 }
 

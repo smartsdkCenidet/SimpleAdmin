@@ -11,7 +11,6 @@ var hybridMutant = L.gridLayer.googleMutant({
     type:'hybrid'
 });
 
-
 L.control.layers({
     StreetsMap: roadMutant,
     SateliteMap: hybridMutant
@@ -25,9 +24,14 @@ var polylineArrayCoordinates = [];
 var pointMap = [];
 var idZoneSelected;
 var parkingSelected;
+var roadSelected;
+var zoneSelected;
 var editableLayers = new L.FeatureGroup();
 var allZones = [];
 var allParkings = [];
+var allRoads = [];
+
+var inParking = false;
 
 map.addLayer(editableLayers);
 
@@ -74,15 +78,12 @@ map.on('draw:created', function (e) {
    console.log(type);
    var layer = e.layer;
     if (type === 'polyline') {
-        console.log("CREANDO POLÍGONO");
         var polygon = layer.toGeoJSON();
         var polygonCoordinates = polygon['geometry']['coordinates'];
         //CONVERT COORDINATES [LON,LAT] GeoJSON IN [LAT,LON] COORDINATES.
         coordinatesConverted = [];
         for(let i=0; i<polygonCoordinates.length;i++){
-          for(let j=0; j<polygonCoordinates[i].length;j++){
-            coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
-          }
+           coordinatesConverted.push([polygonCoordinates[i][1], polygonCoordinates[i][0]])
         }
         map.removeControl(drawControl);
         map.addControl(drawControl2);   
@@ -98,10 +99,8 @@ map.on('draw:edited', function (e) {
         //CONVERT COORDINATES [LON,LAT] GeoJSON IN [LAT,LON] COORDINATES.
         coordinatesConverted = [];
         for(let i=0; i<polygonCoordinates.length;i++){
-          for(let j=0; j<polygonCoordinates[i].length;j++){
-            coordinatesConverted.push([polygonCoordinates[i][j][1],polygonCoordinates[i][j][0]]);         
-          }
-        }
+            coordinatesConverted.push([polygonCoordinates[i][1], polygonCoordinates[i][0]])
+         }
     });
 });
 
@@ -111,45 +110,43 @@ map.on('draw:deleted', function (e) {
 });
 
 $("#save").click(()=> {
-
-    var category = [];
-    if ($("#privateCheck").is(':checked')){
-        category.push("Private")
+    var lane  = [];
+    if ($("#forwardCheck").is(':checked')){
+        lane.push("forward");
     }
-    if ($("#employeesCheck").is(':checked')){
-        category.push("For employees")
-    }
-    if ($("#visitorsCheck").is(':checked')){
-        category.push("For Visitors")
-    }
-    if ($("#studentsCheck").is(':checked')){
-        category.push("For Students")
+    if ($("#backwardCheck").is(':checked')){
+        lane.push("backward");
     }
 
-    let parking = {
-        areaServed : $("#zonelist").val(),
+    let roadSegment = {
         name: $("#name").val(),
-        description: $('#description').val(),
         location: coordinatesConverted,
-        category 
+        refRoad : roadSelected["idRoad"],
+        startPoint : coordinatesConverted[0],
+        endPoint :  coordinatesConverted[1],
+        totalLaneNumber : lane.length ,
+        maximumAllowedSpeed : $("#max").val() , 
+        minimumAllowedSpeed : $("#min").val(),
+        laneUsage : lane,
+        width : $("#width").val() 
     };
-    console.log(parking)
-    fetch(`${smartService}/api/parking`, {
+    console.log(roadSegment)
+    fetch(`${smartService}/api/roadSegment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Methods':'POST, OPTIONS'
         },
-        body : JSON.stringify(parking)
+        body : JSON.stringify(roadSegment)
     })
     .then((respuesta) => {
         if(respuesta.status != 201){
-            alert("An error has ocurred to save the subzone entity");
+            alert("An error has ocurred to save the roadSegment entity");
             clear();
         }
         else{
             console.log(respuesta);
-            alert("Parking save successfully");
+            alert("RoadSegment save successfully");
             clear();
         }
     })
@@ -159,14 +156,7 @@ $("#save").click(()=> {
 $("#cancel").click(clear);
 
 function clear () {
-    $("#name").val("");  
-    $('select[name=zonelist]').val("no");
-    $("#privateCheck").prop('checked', false);
-    $("#employeesCheck").prop('checked', false);
-    $("#visitorsCheck").prop('checked', false);
-    $("#studentsCheck").prop('checked', false);
-    $('#description').val("");
-    map.setView(new L.LatLng(0,0), 2);
+    location.reload(true);
     return;
 }
 
@@ -184,7 +174,6 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
                 text: element['name']
             })); 
             allZones[element['idZone']] = element;
-            
         });
     }
 });
@@ -192,6 +181,11 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
 function getParkings (zone) {
     //GET ALL PARKING REGISTERED
     $.get(`${smartService}/api/parking?status=1&areaServed=${zone}`, function(data){
+        $( '#parkinglist' ).empty();
+        $('#parkinglist').append($('<option>', {
+            value: "no",
+            text: "Select an option"
+        })); 
         if(data.length===0){
             console.log("No se encontraron campus ");
         }
@@ -208,6 +202,31 @@ function getParkings (zone) {
     });
 }
 
+function getRoads (responsible) {
+    //GET ALL PARKING REGISTERED
+    $.get(`${smartService}/api/road?status=1&responsible=${responsible}`, function(data){
+        $( '#roadList' ).empty();
+        $('#roadList').append($('<option>', {
+            value: "no",
+            text: "Select an option"
+        })); 
+        if(data.length===0){
+            console.log("No se encontraron campus ");
+        }
+        else{
+            
+            campus = data;
+            campus.forEach(element => {
+                $('#roadList').append($('<option>', {
+                    value: element['idRoad'],
+                    text: element['name']
+                })); 
+                allRoads[element['idRoad']] = element;
+            });
+        }
+    });
+}
+
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#zonelist').change(function() {
     let idZone = $(this).val()
@@ -217,13 +236,96 @@ $('#zonelist').change(function() {
     map.setView(new L.LatLng(zoneSelected['centerPoint'][0], zoneSelected['centerPoint'][1]), 18);
     polyline = L.polyline( zoneLocation, {color: '#ff6666'}).addTo(map);
     getParkings(idZone);
+    console.log(inParking)
+    if (inParking === false) {
+        getRoads(idZone);
+    }
 });
 
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#parkinglist').change(function() {
     let idParking = $(this).val()
-    //GET ALL INFORMATION OF A SPECIFIC CAMPUS
-    parkingSelected = allParkings[idParking]
-    parkingLocation = parkingSelected['location'];
-    polyline = L.polyline( parkingLocation, {color: '#3498db'}).addTo(map);
+    if (idParking != "no") {
+        //GET ALL INFORMATION OF A SPECIFIC CAMPUS
+        parkingSelected = allParkings[idParking]
+        parkingLocation = parkingSelected['location'];
+        polyline = L.polyline( parkingLocation, {color: '#3498db'}).addTo(map);
+        getRoads(idParking);
+    }
+    
+});
+//SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
+$('#roadList').change(function() {
+    let idRoad = $(this).val();
+    if (idRoad != "no") {
+        roadSelected  = allRoads[idRoad];
+    }
+    
+});
+
+$( "#parkingListDiv" ).hide();
+$('input[type=radio][name=associatedRadio]').change(function() {
+    $( '#roadList' ).empty();
+    $('#roadList').append($('<option>', {
+        value: "no",
+        text: "Select an option"
+    })); 
+    if(this.value == 'parking'){
+        $( "#parkingListDiv" ).show();
+        inParking = true;
+        if (zoneSelected !== undefined){
+            getParkings(zoneSelected["idZone"])
+        }
+        
+    }else {
+        $( "#parkingListDiv" ).hide();
+        if (zoneSelected !== undefined){
+            getRoads(zoneSelected["idZone"])
+        }
+        parkingSelected = undefined;
+        inParking = false;
+    }
+
+});
+
+$("#saveRoad").click(() => {
+    var responsible = "";
+    if (parkingSelected !== undefined && inParking !== false){
+        responsible = parkingSelected["idOffStreetParking"];
+    }else if (zoneSelected !== undefined){
+        responsible = zoneSelected["idZone"];
+    }else {
+        return 
+    }
+    let road = {
+        responsible : responsible,
+        name: $("#roadName").val(),
+        description: $('#description').val()
+    };
+    fetch(`${smartService}/api/road`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Methods':'POST, OPTIONS'
+        },
+        body : JSON.stringify(road)
+    })
+    .then((respuesta) => {
+        if(respuesta.status != 201){
+            alert("An error has ocurred to save the road entity");
+        }
+        else{
+            console.log(respuesta);
+            alert("Road save successfully");
+            var responsible = "";
+            if (parkingSelected !== undefined && inParking !== false){
+                responsible = parkingSelected["idOffStreetParking"]
+            }else{
+                responsible = zoneSelected["idZone"]
+            }
+            getRoads(responsible);
+            $("#roadModal .close").click()
+        }
+    })
+    return;
 });
