@@ -50,15 +50,14 @@ $('#alerts-visualization').change(function() {
     map.removeLayer(markerLayer)
 })
 function centerMap(value, category){
-    fetch(`${smartService}/api/${category}/${value}`, {
+    fetch(`${smartService}/api/${category}/${value}?status=1`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET'
         },
     })
     .then((res) => res.json())
-    .then((data)=> {
-        console.dir(data)   
+    .then((data)=> {  
         map.setView(new L.LatLng(data['centerPoint'][0], data['centerPoint'][1]), 19);
         polyline = L.polyline(data['location'], {color: '#ff6666'}).addTo(map);
     })
@@ -75,7 +74,7 @@ function showZones(zones){
     }
 }
 function searchZones(){
-    fetch(`${smartService}/api/zone`, {
+    fetch(`${smartService}/api/zone?status=1`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, OPTIONS'
@@ -83,7 +82,6 @@ function searchZones(){
     })
     .then((res) => res.json())
     .then((data)=> {
-        console.dir(data)   
         zones = data; 
         showZones(zones);
     })
@@ -111,25 +109,23 @@ function getAlerts(alertsVisualization, category, value){
     .then((res) => res.json())
     .then((data)=> {
         var colorAlert;
-        console.log(data);
         if(!$.isEmptyObject(data)){
             data.forEach((element, index)=>{
                 let tempLocation = JSON.parse("["+element['location']+"]")
-                console.log(tempLocation);
                 if(element['severity']==="informational"){
-                    colorAlert = '#A69E9A'
+                    colorAlert = '#3498db'
                 }
                 else if(element['severity']==="low"){
-                    colorAlert = '#4A9EDD'
+                    colorAlert = '#2c3e50'
                 }
                 else if(element['severity']==="medium"){
-                    colorAlert = '#fa0'
+                    colorAlert = '#f1c40f'
                 }
                 else if(element['severity']==="high"){
-                    colorAlert = '#FA6819'
+                    colorAlert = '#e67e22'
                 }
                 else if(element['severity']==="critical"){
-                    colorAlert = '#D50615'
+                    colorAlert = '#c0392b'
                 }
                 marker = L.marker(JSON.parse("["+element['location']+"]"), {
                     icon: L.MakiMarkers.icon({
@@ -146,3 +142,8 @@ function getAlerts(alertsVisualization, category, value){
         markerLayer.addTo(map);
     })
 }
+
+$("#clear").click(function clear(){
+    location.reload(true)
+    return;
+})

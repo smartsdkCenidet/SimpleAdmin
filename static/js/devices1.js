@@ -239,3 +239,5 @@ function showMap(location, data){
         console.log(error);
     })
 }
+
+

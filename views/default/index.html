@@ -133,7 +133,14 @@
                 <h6 class=""><strong> HRS.</strong></h6>
               </div>
             </div>
-            <button type="submit"  class="col-12 btn btn-success btn-rounded text-center"> Consult </button>
+            <div class="form-group row">   
+                <div class="col-6">
+                    <button type="submit"  class="col-12 btn btn-success btn-rounded text-center "> Consult </button>
+                </div>
+                <div class="col-6">
+                    <button type="button" id="clear1" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
+                </div>
+            </div>
           </form>
         </div>
         <!-- END WHO WAS IN THE ZONE INSTITUTION-->
@@ -165,7 +172,14 @@
               </div>
             </div>
             <br>
-            <button type="submit" class="col-12 btn btn-success btn-rounded text-center"> Consult </button>
+            <div class="form-group row">   
+                <div class="col-6">
+                    <button type="submit"  class="col-12 btn btn-success btn-rounded text-center "> Consult </button>
+                </div>
+                <div class="col-6">
+                    <button type="button" id="clear2" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
+                </div>
+            </div>
           </form>
         </div>
         <!-- END WHO IS IN THE INSTITUTION-->
@@ -183,7 +197,14 @@
               </select>
             </div>
             <br>
-            <button type="submit"  class="col-12 btn btn-success btn-rounded text-center"> Consult </button>
+            <div class="form-group row">   
+                <div class="col-6">
+                    <button type="submit"  class="col-12 btn btn-success btn-rounded text-center "> Consult </button>
+                </div>
+                <div class="col-6">
+                    <button type="button" id="clear3" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
+                </div>
+            </div>
           </form>
           <br>
         </div>
@@ -210,6 +231,7 @@
       searching3()
       event.preventDefault();
   });
+  $("#clear1 , #clear2, #clear3 ").click(()=> location.reload(true))
 </script>
 
 
