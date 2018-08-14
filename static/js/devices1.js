@@ -75,9 +75,8 @@ L.control.layers({
 }).addTo(map);
 
 
-console.log("init")
 //GET ALL ZONES REGISTERED
-$.get("https://smartsecurity-webservice.herokuapp.com/api/zone", function(data){
+$.get(`${smartService}/api/zone?status=1`, function(data){
     if(data.length===0){
         console.log("No se encontraron campus ");
     }
@@ -104,7 +103,7 @@ $.get("https://smartsecurity-webservice.herokuapp.com/api/zone", function(data){
 $('#zonelist1').change(function() {
     let idZone = $(this).val()
     //GET ALL INFORMATION OF A SPECIFIC CAMPUS
-    $.get("https://smartsecurity-webservice.herokuapp.com/api/zone/"+idZone, function(data){
+    $.get(`${smartService}/api/zone/${idZone}`, function(data){
         if(data.length===0){
             console.log("No se encontró información del campus");
         }
@@ -147,7 +146,7 @@ function searching1(){
 }
 
 function searchUser(userData){
-    $.get("https://smartsecurity-webservice.herokuapp.com/crate/locationOwnerDateTime?owner="+userData[0]['id']+"&date="+dateTimeSplit[0]+"&time="+timeHour, function(data){
+    $.get(`${smartService}/crate/locationOwnerDateTime?owner=${userData[0]['id']}&date=${dateTimeSplit[0]}&time=${timeHour}`, function(data){
         if(data.length===0){
             console.log("No se encontraron registros con el Usuario: "+userData[0]['firstName']+" en la fecha y hora especificados: "+date+" "+hour+" hours");
             alert("No se encontraron registros con el Usuario: "+userData[0]['firstName']+" en la fecha y hora especificados: "+date+" "+hour+" hours");
@@ -198,7 +197,7 @@ async function searchingUserInCampus(locationCoordinates){
 
 function searchUserInfo(phoneNumber){
     console.log(phoneNumber);
-    fetch("https://smartsecurity-webservice.herokuapp.com/api/user?phoneNumber="+phoneNumber, {
+    fetch(`${smartService}/api/user?phoneNumber=${phoneNumber}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
@@ -219,8 +218,6 @@ function searchUserInfo(phoneNumber){
 function showMap(location, data){
     markerLayer.clearLayers();
     map.removeLayer(markerLayer)
-    console.log(location);
-    console.dir(data);
     //===============================DATE BLOCK====================================
     //MEXICO TIMEZONE
     moment.tz.add("America/Mexico_City|LMT MST CST CDT CWT|6A.A 70 60 50 50|012121232324232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 gEn0 TX0 3xd0 Jb0 6zB0 SL0 e5d0 17b0 1Pff0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|20e6");
@@ -235,7 +232,7 @@ function showMap(location, data){
     
     map.setView(new L.LatLng(location[0], location[1]), 18);
     polyline = L.polyline(zoneLocation).addTo(map);
-    fetch("https://smartsecurity-webservice.herokuapp.com/api/user?id="+data[0]['owner'], {
+    fetch(`${smartService}/api/user?id=${data[0]['owner']}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'

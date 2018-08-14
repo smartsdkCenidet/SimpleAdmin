@@ -197,18 +197,19 @@
       </div>
     </div>
 <script>
+  var smartService = '{{=smartService}}';
   $("#form1").submit(function(event){
     searching1()
     event.preventDefault();
-});
-$("#form2").submit(function(event){
-    searching2()
-    event.preventDefault();
-});
-$("#form3").submit(function(event){
-    searching3()
-    event.preventDefault();
-});
+  });
+  $("#form2").submit(function(event){
+      searching2()
+      event.preventDefault();
+  });
+  $("#form3").submit(function(event){
+      searching3()
+      event.preventDefault();
+  });
 </script>
 
 
