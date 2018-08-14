@@ -1,3 +1,21 @@
+
+$("#alert").hide();
+$("#form").submit(function(event){
+    if(coordinatesConverted.length <= 0){
+        $("#alert").show();
+    }else{
+        $("#alert").hide();
+    }
+    save();
+    console.log("form1 ok")
+    event.preventDefault();
+});
+$("#form2").submit(function(event){
+    saveRoad();
+    console.log("form2 ok")
+    event.preventDefault();
+});
+
 // // INITIALIZATION OF THE MAP
 var map = L.map("mapid", {fullscreenControl: true}).setView([0, -0], 2);
 
@@ -109,7 +127,7 @@ map.on('draw:deleted', function (e) {
     map.addControl(drawControl);
 });
 
-$("#save").click(()=> {
+function save () {
     var lane  = [];
     if ($("#forwardCheck").is(':checked')){
         lane.push("forward");
@@ -151,7 +169,7 @@ $("#save").click(()=> {
         }
     })
     return;
-});
+}
 
 $("#cancel").click(clear);
 
@@ -183,7 +201,7 @@ function getParkings (zone) {
     $.get(`${smartService}/api/parking?status=1&areaServed=${zone}`, function(data){
         $( '#parkinglist' ).empty();
         $('#parkinglist').append($('<option>', {
-            value: "no",
+            value: "",
             text: "Select an option"
         })); 
         if(data.length===0){
@@ -207,7 +225,7 @@ function getRoads (responsible) {
     $.get(`${smartService}/api/road?status=1&responsible=${responsible}`, function(data){
         $( '#roadList' ).empty();
         $('#roadList').append($('<option>', {
-            value: "no",
+            value: "",
             text: "Select an option"
         })); 
         if(data.length===0){
@@ -245,7 +263,7 @@ $('#zonelist').change(function() {
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#parkinglist').change(function() {
     let idParking = $(this).val()
-    if (idParking != "no") {
+    if (idParking != "") {
         //GET ALL INFORMATION OF A SPECIFIC CAMPUS
         parkingSelected = allParkings[idParking]
         parkingLocation = parkingSelected['location'];
@@ -257,38 +275,41 @@ $('#parkinglist').change(function() {
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#roadList').change(function() {
     let idRoad = $(this).val();
-    if (idRoad != "no") {
+    if (idRoad != "") {
         roadSelected  = allRoads[idRoad];
     }
     
 });
 
 $( "#parkingListDiv" ).hide();
+$("#parkinglist").prop('required',false);
 $('input[type=radio][name=associatedRadio]').change(function() {
     $( '#roadList' ).empty();
     $('#roadList').append($('<option>', {
-        value: "no",
+        value: "",
         text: "Select an option"
-    })); 
+    }));  
     if(this.value == 'parking'){
         $( "#parkingListDiv" ).show();
         inParking = true;
+        $("#parkinglist").prop('required',true);
         if (zoneSelected !== undefined){
             getParkings(zoneSelected["idZone"])
         }
         
     }else {
+        parkingSelected = undefined;
+        inParking = false;
+        $("#parkinglist").prop('required',false);
         $( "#parkingListDiv" ).hide();
         if (zoneSelected !== undefined){
             getRoads(zoneSelected["idZone"])
         }
-        parkingSelected = undefined;
-        inParking = false;
     }
 
 });
 
-$("#saveRoad").click(() => {
+function saveRoad() {
     var responsible = "";
     if (parkingSelected !== undefined && inParking !== false){
         responsible = parkingSelected["idOffStreetParking"];
@@ -328,4 +349,4 @@ $("#saveRoad").click(() => {
         }
     })
     return;
-});
+}

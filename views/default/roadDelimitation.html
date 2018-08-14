@@ -17,7 +17,7 @@
 {{end}} 
 
 {{block page_js}}
-<script src="{{=URL('static','js/roadDelimitations.js')}}"></script>
+<script src="{{=URL('static','js/roadDelimitation.js')}}"></script>
 {{end}}
 
 {{block header}}
@@ -26,7 +26,7 @@
 </center>
 {{end}}
 
-<ul class="nav justify-content-center">
+<ul class="nav justify-content-center"> 
     <li class="nav-item">
       <a class="nav-link" href="{{=URL('default','index')}}">User Devices</a>
     </li>
@@ -51,7 +51,7 @@
             <div class="card-header">
                 <h4 class="text-center"> RoadSegment Delimitation</h4>
             </div>
-            <form method="GET" action="javascript:void(0);">
+            <form id="form">
 
                 <label > <i class="far fa-map"></i> Associated to: </label>
                 <div class="form-group container">
@@ -74,8 +74,8 @@
                 <!-- Zone name-->
                 <div class="form-group">
                     <label for="zonelist"> <i class="far fa-map"></i> Select Zone: </label>
-                    <select id="zonelist" name="zonelist" class="form-control">
-                      <option value="no" disabled selected>Select an option</option>
+                    <select id="zonelist" name="zonelist" class="form-control" required>
+                      <option value="" disabled selected>Select an option</option>
                     </select>
                 </div>
                 <!-- Parking name-->
@@ -83,17 +83,17 @@
                 <div class="form-group" id="parkingListDiv">
                     <label for="parkinglist"> <i class="far fa-map"></i> Select Parking: </label>
                     <select id="parkinglist" name="parkinglist" class="form-control">
-                        <option value="no" disabled selected>Select an option</option>
+                        <option value="" disabled selected>Select an option</option>
                     </select>
                 </div>
 
-                <!-- Parking name-->
+                <!-- Road name-->
                 
                 <div class="form-group row">
                     <div class="col-sm">
                         <label for="roadList"> <i class="far fa-map"></i> Select Road: </label>
-                        <select id="roadList" name="roadList" class="form-control">
-                            <option value="no" disabled selected>Select an option</option>
+                        <select id="roadList" name="roadList" class="form-control" required>
+                            <option value="" disabled selected>Select an option</option>
                         </select>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
 
                 <div class="form-group">
                     <label for="name">  <i class="far fa-map"></i> Name: </label>
-                    <input type="text" name="name" id="name" class="form-control text-center">
+                    <input type="text" name="name" id="name" class="form-control text-center" required>
                 </div>
 
                
@@ -116,11 +116,11 @@
                     <div class="row">
                         <div class="col-sm">
                             <label for="max">  Maximum: </label>
-                            <input type="number" name="max" id="max" class="form-control text-center">
+                            <input type="number" name="max" id="max" class="form-control text-center" required>
                         </div>
                         <div class="col-sm">
                             <label for="min"> Minimum: </label>
-                            <input type="number" name="min" id="min" class="form-control text-center">
+                            <input type="number" name="min" id="min" class="form-control text-center" required>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="forwardCheck">
+                                <input class="form-check-input" type="checkbox" value="" id="forwardCheck" required>
                                 <label class="form-check-label" for="forwardCheck">
                                     Forward
                                 </label>
@@ -148,12 +148,12 @@
                 </div> 
                 <div class="form-group">
                     <label for="width">  <i class="far fa-map"></i> Width: </label>
-                    <input type="number" name="width" id="width" class="form-control text-center">
+                    <input type="number" name="width" id="width" class="form-control text-center" required>
                 </div>
                 <br>
                 <div class="form-group row">   
                     <div class="col-6">
-                        <button type="button" id="save"  class="col-12 btn btn-success btn-rounded text-center "> Save </button>
+                        <button type="submit"  class="col-12 btn btn-success btn-rounded text-center "> Save </button>
                     </div>
                     <div class="col-6">
                         <button type="button" id="cancel" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
@@ -166,6 +166,9 @@
     
     <div class="col-sm-8">
         <div id="mapid">
+        </div>
+        <div class="alert alert-danger" role="alert" id="alert">
+            You should to draw one polyline
         </div>
     </div>
 
@@ -181,23 +184,24 @@
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
-           <form action="GET"> 
-               <div class="form-group">
-                    <label for="roadName">  <i class="far fa-map"></i>  Name: </label>
-                    <input type="text" name="roadName" id="roadName" class="form-control text-center">
-                </div>
-                
-                <div class="form-group basic-textarea">
-                    <label for="description"> <i class="fas fa-info-circle"></i>  Description: </label>
-                    <textarea class="form-control text-center" id="description" placeholder="Brief description of the zone" required rows="2"></textarea>
-                </div>  
-           </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="saveRoad" class="btn btn-primary">Save Road</button>
-        </div>
+        <form id="form2"> 
+            <div class="modal-body">
+                <div class="form-group">
+                        <label for="roadName">  <i class="far fa-map"></i>  Name: </label>
+                        <input type="text" name="roadName" id="roadName" class="form-control text-center" required>
+                    </div>
+                    
+                    <div class="form-group basic-textarea">
+                        <label for="description"> <i class="fas fa-info-circle"></i>  Description: </label>
+                        <textarea class="form-control text-center" id="description" placeholder="Brief description of the zone" required rows="2"></textarea>
+                    </div>  
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit"  class="btn btn-primary">Save Road</button>
+            </div>
+        </form>
         </div>
     </div>
 </div>
