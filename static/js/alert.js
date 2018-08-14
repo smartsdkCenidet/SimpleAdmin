@@ -1,4 +1,8 @@
 
+$("#form").submit(function(event){
+    queryAlerts();
+    event.preventDefault();
+});
 searchZones();
 var firstTimeZones = false;
 var firstTimeSubzones = false;
