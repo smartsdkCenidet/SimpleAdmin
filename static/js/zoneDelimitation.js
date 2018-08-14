@@ -1,4 +1,19 @@
-
+//GLOBAL VARIABLES 
+var coordinatesConverted = []; 
+var polylineArrayCoordinates = [];
+var pointMap = [];
+var idZoneSelected;
+var editableLayers = new L.FeatureGroup();
+$("#alert").hide();
+$("#form").submit(function(event){
+    if(coordinatesConverted.length <= 0){
+        $("#alert").show();
+    }else{
+        $("#alert").hide();
+    }
+    save();
+    event.preventDefault();
+});
 // // INITIALIZATION OF THE MAP
 var map = L.map("mapid", {fullscreenControl: true}).setView([0, -0], 2);
 
@@ -20,12 +35,7 @@ L.control.layers({
     collapsed: false
 }).addTo(map);
 
-//GLOBAL VARIABLES 
-var coordinatesConverted = []; 
-var polylineArrayCoordinates = [];
-var pointMap = [];
-var idZoneSelected;
-var editableLayers = new L.FeatureGroup();
+
 
 map.addLayer(editableLayers);
 
@@ -141,7 +151,7 @@ function clear () {
 $("#cancel").click(clear);
 
 // FUNCTION TO SAVE THE ZONE INFORMATION
-$("#save").click(()=> {
+function save () {
     let zone = {
         name: $("#zoneName").val(),
         address:  $("#zoneAddress").val(),
@@ -169,5 +179,5 @@ $("#save").click(()=> {
         }
     })
     return;
-});
+}
 

@@ -17,7 +17,7 @@
 {{end}} 
 
 {{block page_js}}
-<script src="{{=URL('static','js/zoneDelimitations.js')}}"></script>
+<script src="{{=URL('static','js/zoneDelimitation.js')}}"></script>
 {{end}}
 
 {{block header}}
@@ -50,12 +50,12 @@
             <div class="card-header">
                 <h4 class="text-center"> Zones Delimitation</h4>
             </div>
-            <form method="GET" action="javascript:void(0);">
+            <form id="form">
                 <!-- Zone name-->
                 <br>
                 <div class="form-group">
                     <label for="zoneName">  <i class="far fa-map"></i>  Zone name: </label>
-                    <input type="text" name="zoneName" id="zoneName" class="form-control text-center">
+                    <input type="text" name="zoneName" id="zoneName" class="form-control text-center" required>
                 </div>
 
                 <!-- Address's Zone -->
@@ -82,7 +82,7 @@
                 <br>
                 <div class="form-group row">   
                     <div class="col-6">
-                        <button type="button" id="save" class="col-12 btn btn-success btn-rounded text-center "> Save </button>
+                        <button type="submit"  class="col-12 btn btn-success btn-rounded text-center "> Save </button>
                     </div>
                     <div class="col-6">
                         <button type="button" id="cancel" class="col-12 btn btn-warning btn-rounded text-center"> Cancel </button>
@@ -96,6 +96,9 @@
 
     <div class="col-sm-8">
         <div id="mapid">
+        </div>
+        <div class="alert alert-danger" role="alert" id="alert">
+            You should to draw one polygon
         </div>
     </div>
 </div>
