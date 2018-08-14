@@ -116,6 +116,7 @@ $('#zonelist1').change(function() {
         }
     });
 });
+
 function searching1(){
     //GET DATE AND HOUR FROM INPUTS
     tempDate = $("#dateInput").val();
@@ -144,6 +145,7 @@ function searching1(){
     searchUserInfo(phonenumber);
     return;
 }
+
 function searchUser(userData){
     $.get("https://smartsecurity-webservice.herokuapp.com/crate/locationOwnerDateTime?owner="+userData[0]['id']+"&date="+dateTimeSplit[0]+"&time="+timeHour, function(data){
         if(data.length===0){

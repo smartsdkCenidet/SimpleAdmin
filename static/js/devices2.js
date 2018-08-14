@@ -1,4 +1,5 @@
 
+
 //SELECTOR CHANGE VALUE: NAME=SELECTOR ZONE
 $('#zonelist2').change(function() {
     let idZone = $(this).val()
@@ -73,6 +74,8 @@ function searching2(){
         console.log(error);
     })
 }
+
+
 
 
     
