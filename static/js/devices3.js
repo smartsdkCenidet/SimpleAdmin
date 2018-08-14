@@ -35,10 +35,17 @@ function showDevicesOnmap(dataDevices){
             .then((dataUser)=> {
                 console.dir(dataUser)
                 if(dataUser){
-                    var marker = L.marker(locationTemp).addTo(map)
+                    var marker = L.marker(locationTemp, {
+                        icon: L.MakiMarkers.icon({
+                            icon: "pitch",
+                            color: "#3498db",
+                            size: "l"
+                        })
+                    }).addTo(map)
                     .bindPopup('ID Device: '+dataDevices[i]['id']+'<br> Owner ID: '+dataDevices[i]['owner']+'<br> Name User: '+dataUser[0]['firstName']+ ' '+dataUser[0]['lastName']+'<br> Phone Number: +'+dataUser[0]['phoneNumber'])
                     .addTo(markerLayer);
                     markerLayer.addTo(map);
+                    console.log("tres")
                 }
             })
         }

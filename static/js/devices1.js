@@ -49,21 +49,33 @@ $('select[name=optionsView]').change(function() {
     console.log($(this).val())
 });
 
-//MAP CONTAINER 
-var map = L.map("mapid",{
-    center: [0, -0],
-    zoom: 2,
-    layers: [markerLayer]
-})
+L.MakiMarkers.accessToken = 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA';
 
-// MAPBOX STYLE ON THE MAP
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 20,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA'
+var map = L.map("mapid", {
+    fullscreenControl: true,
+    layers: [markerLayer]
+}).setView([0, -0], 2);
+
+var roadMutant = L.gridLayer.googleMutant({
+    maxZoom: 22,
+    type:'roadmap'
 }).addTo(map);
 
+var hybridMutant = L.gridLayer.googleMutant({
+    maxZoom: 22,
+    type:'hybrid'
+});
+
+
+L.control.layers({
+    StreetsMap: roadMutant,
+    SateliteMap: hybridMutant
+}, {}, {
+    collapsed: false
+}).addTo(map);
+
+
+console.log("init")
 //GET ALL ZONES REGISTERED
 $.get("https://smartsecurity-webservice.herokuapp.com/api/zone", function(data){
     if(data.length===0){
@@ -232,10 +244,17 @@ function showMap(location, data){
         console.dir(dataUser)
         if(dataUser){
             markerLayer.addTo(map);
-            marker = L.marker(location)
+            marker = L.marker(location, {
+                icon: L.MakiMarkers.icon({
+                    icon: "pitch",
+                    color: "#3498db",
+                    size: "l"
+                })
+            })
             .bindPopup('ID Device: '+data[0]['entity_id']+'<br> Owner ID: '+data[0]['owner']+'<br> DateTime: '+dateFormated+'<br> Name User: '+dataUser[0]['firstName']+ ' '+dataUser[0]['lastName']+'<br> Phone Number: +'+dataUser[0]['phoneNumber'])
             .addTo(markerLayer)
             .openPopup()
+            console.log("uno")
         }
     })
     .catch((error)=>{

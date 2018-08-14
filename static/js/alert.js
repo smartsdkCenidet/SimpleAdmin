@@ -5,22 +5,34 @@ var firstTimeSubzones = false;
 var marker;
 var markerLayer = L.layerGroup()
 
-L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA';
+L.MakiMarkers.accessToken = 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA';
 
 var options = {
+    fullscreenControl: true,
     center: [0, -0],
     zoom: 2,
     layers: [markerLayer]
 }
-//MAP INICIALIZATION
-var map = L.mapbox.map('mapid', 'mapbox.streets', options)
 
-// MAPBOX STYLE ON THE MAP
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+
+var map = L.map("mapid",options);
+
+var roadMutant = L.gridLayer.googleMutant({
     maxZoom: 22,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiaGFpZGVlIiwiYSI6ImNqOXMwenczMTBscTIzMnFxNHVyNHhrcjMifQ.ILzRx4OtBRK7az_4uWQXyA'
+    type:'roadmap'
+}).addTo(map);
+
+var hybridMutant = L.gridLayer.googleMutant({
+    maxZoom: 22,
+    type:'hybrid'
+});
+
+
+L.control.layers({
+    StreetsMap: roadMutant,
+    SateliteMap: hybridMutant
+}, {}, {
+    collapsed: false
 }).addTo(map);
 
 //CENTER MARKER
@@ -116,10 +128,10 @@ function getAlerts(alertsVisualization, category, value){
                     colorAlert = '#D50615'
                 }
                 marker = L.marker(JSON.parse("["+element['location']+"]"), {
-                    icon: L.mapbox.marker.icon({
-                        'marker-size': 'large',
-                        'marker-symbol': 'car',
-                        'marker-color': colorAlert
+                    icon: L.MakiMarkers.icon({
+                        icon: "car",
+                        color: colorAlert,
+                        size: "l"
                     })
                 })
                 .on('click', markerOnClick)

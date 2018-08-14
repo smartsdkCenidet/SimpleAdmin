@@ -31,11 +31,18 @@ function showDeviceOnMap(dataDevice){
     .then((dataUser)=> {
         console.dir(dataUser)
         if(dataUser){
-            marker = L.marker(locationTemp).addTo(map)
+            marker = L.marker(locationTemp, {
+                icon: L.MakiMarkers.icon({
+                    icon: "pitch",
+                    color: "#3498db",
+                    size: "l"
+                })
+            }).addTo(map)
             .bindPopup('ID Device: '+dataDevice[0]['id']+'<br> Owner ID: '+dataDevice[0]['owner']+'<br> Name User: '+dataUser[0]['firstName']+ ' '+dataUser[0]['lastName']+'<br> Phone Number: +'+dataUser[0]['phoneNumber'])
             .openPopup()
             .addTo(markerLayer);
             markerLayer.addTo(map);
+            console.log("dos")
         }
     })
     .catch((error)=>{
