@@ -84,15 +84,15 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
         campus.forEach(element => {
             $('#zonelist1').append($('<option>', {
                 value: element['idZone'],
-                text: element['name']
+                text: element['owner']
             })); 
             $('#zonelist2').append($('<option>', {
                 value: element['idZone'],
-                text: element['name']
+                text: element['owner']
             })); 
             $('#zonelist3').append($('<option>', {
                 value: element['idZone'],
-                text: element['name']
+                text: element['owner']
             })); 
         });
     }

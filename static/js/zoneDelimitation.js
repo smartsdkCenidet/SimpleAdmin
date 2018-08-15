@@ -79,10 +79,8 @@ var drawControl2 = new L.Control.Draw({
 //FUNCTION TO CONTROLS THE DRAWING OF A SHAPE.
 map.on('draw:created', function (e) {
    var type = e.layerType;
-   console.log(type);
    var layer = e.layer;
     if (type === 'polygon') {
-        console.log("CREANDO POLÍGONO");
         var polygon = layer.toGeoJSON();
         var polygonCoordinates = polygon['geometry']['coordinates'];
         //CONVERT COORDINATES [LON,LAT] GeoJSON IN [LAT,LON] COORDINATES.
@@ -153,7 +151,7 @@ $("#cancel").click(clear);
 // FUNCTION TO SAVE THE ZONE INFORMATION
 function save () {
     let zone = {
-        name: $("#zoneName").val(),
+        owner: $("#zoneName").val(),
         address:  $("#zoneAddress").val(),
         description: $('#zoneDescription').val(),
         centerPoint: pointMap,

@@ -7,12 +7,10 @@ $("#form").submit(function(event){
         $("#alert").hide();
     }
     save();
-    console.log("form1 ok")
     event.preventDefault();
 });
 $("#form2").submit(function(event){
     saveRoad();
-    console.log("form2 ok")
     event.preventDefault();
 });
 
@@ -93,7 +91,6 @@ var drawControl2 = new L.Control.Draw({
 //FUNCTION TO CONTROLS THE DRAWING OF A SHAPE.
 map.on('draw:created', function (e) {
    var type = e.layerType;
-   console.log(type);
    var layer = e.layer;
     if (type === 'polyline') {
         var polygon = layer.toGeoJSON();
@@ -189,7 +186,7 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
         campus.forEach(element => {
             $('#zonelist').append($('<option>', {
                 value: element['idZone'],
-                text: element['name']
+                text: element['owner']
             })); 
             allZones[element['idZone']] = element;
         });

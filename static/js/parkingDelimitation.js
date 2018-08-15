@@ -187,7 +187,7 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
         campus.forEach(element => {
             $('#zonelist').append($('<option>', {
                 value: element['idZone'],
-                text: element['name']
+                text: element['owner']
             })); 
             allZones[element['idZone']] = element;
         });

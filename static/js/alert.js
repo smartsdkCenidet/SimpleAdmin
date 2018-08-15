@@ -67,7 +67,7 @@ function showZones(zones){
         for(let i=0; i<zones.length;i++){
             $('#option-search-1').append($('<option>', {
                 value: zones[i]['idZone'],
-                text: zones[i]['name']
+                text: zones[i]['owner']
             })); 
         }
         firstTimeZones = true;
