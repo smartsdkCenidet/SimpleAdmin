@@ -11,6 +11,8 @@ $("#form").submit(function(event){
 });
 $("#form2").submit(function(event){
     saveRoad();
+    $("#roadName").val("");
+    $("#description").val("");
     event.preventDefault();
 });
 
