@@ -10,8 +10,9 @@ $("#form").submit(function(event){
         $("#alert").show();
     }else{
         $("#alert").hide();
+        save();
     }
-    save();
+    
     event.preventDefault();
 });
 // // INITIALIZATION OF THE MAP

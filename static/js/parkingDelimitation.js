@@ -12,8 +12,8 @@ $("#form").submit(function(event){
         $("#alert").show();
     }else{
         $("#alert").hide();
+        save();
     }
-    save();
     event.preventDefault();
 });
 // // INITIALIZATION OF THE MAP
@@ -147,7 +147,6 @@ function save () {
         location: coordinatesConverted,
         category 
     };
-    console.log(parking)
     fetch(`${smartService}/api/parking`, {
         method: 'POST',
         headers: {

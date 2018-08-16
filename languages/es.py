@@ -205,6 +205,8 @@
 'How are you?': 'How are you?',
 'How did you get here?': '¿Cómo llegaste aquí?',
 'htmledit': 'htmledit',
+'https://smartsecurity-devservice.herokuapp.com': 'https://smartsecurity-devservice.herokuapp.com',
+'https://smartsecurity-devservice.herokuapp.com/': 'https://smartsecurity-devservice.herokuapp.com/',
 'https://smartsecurity-webservice.herokuapp.com': 'https://smartsecurity-webservice.herokuapp.com',
 'Impersonate': 'Suplantar',
 'import': 'importar',

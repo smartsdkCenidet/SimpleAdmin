@@ -5,8 +5,8 @@ $("#form").submit(function(event){
         $("#alert").show();
     }else{
         $("#alert").hide();
+        save();
     }
-    save();
     event.preventDefault();
 });
 $("#form2").submit(function(event){
