@@ -207,6 +207,7 @@
 'htmledit': 'htmledit',
 'https://smartsecurity-devservice.herokuapp.com': 'https://smartsecurity-devservice.herokuapp.com',
 'https://smartsecurity-devservice.herokuapp.com/': 'https://smartsecurity-devservice.herokuapp.com/',
+'https://smartsecurity-dwebservice.herokuapp.com': 'https://smartsecurity-dwebservice.herokuapp.com',
 'https://smartsecurity-webservice.herokuapp.com': 'https://smartsecurity-webservice.herokuapp.com',
 'Impersonate': 'Suplantar',
 'import': 'importar',

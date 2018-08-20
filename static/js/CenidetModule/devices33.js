@@ -51,7 +51,7 @@ function showDevicesOnmap(dataDevices){
 }
 function searching3(){
     console.log($("#zonelist3").val());
-    fetch(`${smartService}/service/devices/zone/${$("#zonelist3").val()}?status=1`, {
+    fetch(`${smartService}/service/devices/zone/${$("#zonelist3").val()}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'

@@ -49,7 +49,7 @@ function showDeviceOnMap(dataDevice){
 }
 function searching2(){
     let phone = $('#phonenumber-countrycode').val()+$('#input-search2').val();
-    fetch(`${smartService}/service/devices/zone/${$("#zonelist2").val()}/owner?phoneNumber=${phone}&status=1`, {
+    fetch(`${smartService}/service/devices/zone/${$("#zonelist2").val()}/owner?phoneNumber=${phone}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
