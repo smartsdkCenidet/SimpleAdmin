@@ -38,7 +38,7 @@ $.get(`${smartService}/api/parking?status=1`, function(data){
             allParkings[element['idOffStreetParking']] = element;
 
             $(`#delete${element.idOffStreetParking}`).click(()=> {
-                if (confirm("Are you sure? ")){
+                if (confirm("Are you sure to delete this item? ")){
                     deleteParking(element.idOffStreetParking);
                 }
                 

@@ -19,7 +19,7 @@ $.get(`${smartService}/api/zone?status=1`, function(data){
             allZones[element['idZone']] = element;
 
             $(`#delete${element.idZone}`).click(()=> {
-                if (confirm("Are you sure? ")){
+                if (confirm("Are you sure to delete this item?")){
                     deleteZone(element.idZone);
                 }
                 

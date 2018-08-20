@@ -28,40 +28,48 @@
 
 <ul class="nav justify-content-center">
     <li class="nav-item">
-      <a class="nav-link" href="{{=URL('default','index')}}">User Devices</a>
+        <a class="nav-link" href="{{=URL('default','index')}}">User Devices</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{=URL('default','alerts')}}">Alerts</a>
+        <a class="nav-link" href="{{=URL('default','alerts')}}">Alerts</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{=URL('default','zoneDelimitation')}}">Zone Delimitation</a>
+        <a class="nav-link" href="{{=URL('default','zonesList')}}">Zones</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{=URL('default','parkingDelimitation')}}">Parkings Delimitation</a>
+        <a class="nav-link" href="{{=URL('default','parkingList')}}">Parkings</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{=URL('default','roadDelimitation')}}">RoadSegments Delimitation</a>
+        <a class="nav-link" href="{{=URL('default','roadsList')}}">Roads</a>
     </li>
 </ul>
 <br>
 
 <div class="container">
-    <div>
-        <h4> Registered Parkings </h4>
-        <table class="table table-hover table-dark" id="list">
-            <thead class="thead-dark">
-                <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Zone</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-10">
+            <h4> Registered Parkings </h4>
+        </div>
+        <div class="col-2">
+            <a href="{{=URL('default','parkingDelimitation')}}" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i>
+                Add new parking
+            </a>
+        </div>
     </div>
+    <table class="table table-hover table-dark" id="list">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">#ID Parking</th>
+            <th scope="col">Zone Name</th>
+            <th scope="col">Parking Name</th>
+            <th scope="col">Description</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 
   

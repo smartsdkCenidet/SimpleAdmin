@@ -58,7 +58,7 @@ $.get(`${smartService}/api/road?status=1`, function(data){
             allRoads[element['idRoad']] = element;
 
             $(`#delete${element.idRoad}`).click(()=> {
-                if (confirm("Are you sure? ")){
+                if (confirm("Are you sure to delete this item?")){
                     deleteRoad(element.idRoad);
                 }
                 
