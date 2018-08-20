@@ -66,3 +66,17 @@ def parkingDelimitation():
 
 def roadDelimitation():
     return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def zonesList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def parkingList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def roadsList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def roadSegmentsList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+
