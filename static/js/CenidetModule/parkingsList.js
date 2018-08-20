@@ -20,10 +20,13 @@ $.get(`${smartService}/api/parking?status=1`, function(data){
     else{
         campus = data;
         campus.forEach(element => {
-            zone = element.areaServed;
-            if (allZones[element.areaServed] != undefined)
-                zone = allZones[element.areaServed].name ;
-            $('#zoneList').append(
+            var zone = "";
+            if (allZones[element.areaServed] === undefined){
+                return;
+            }else{
+                zone = allZones[element.areaServed].name; 
+            }
+            $('#list').append(
                 '<tr>'+
                 '<td>' + element.idOffStreetParking.replace('OffStreetParking_','') + 
                 '</td><td>' + zone + 
@@ -37,7 +40,6 @@ $.get(`${smartService}/api/parking?status=1`, function(data){
             $(`#delete${element.idOffStreetParking}`).click(()=> {
                 if (confirm("Are you sure? ")){
                     deleteParking(element.idOffStreetParking);
-                    //location.reload(true);
                 }
                 
             });
@@ -61,6 +63,7 @@ function deleteParking (id) {
         }
         else{
             alert("Parking deleted successfully"); 
+            location.reload(true);
         }
     })
 }

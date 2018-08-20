@@ -72,3 +72,11 @@ def zonesList():
 
 def parkingList():
     return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def roadsList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+def roadSegmentsList():
+    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+
+
