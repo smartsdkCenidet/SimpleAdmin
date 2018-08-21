@@ -21,7 +21,7 @@ $.get(`${smartService}/api/parking?status=1`, function(data){
     else{
         parking = data;
         parking.forEach(element => {
-            allParkings[element['idRoad']] = element;
+            allParkings[element['idOffStreetParking']] = element;
         });
     }
 });
@@ -33,6 +33,7 @@ $.get(`${smartService}/api/road?status=1`, function(data){
     else{
         roads = data;
         roads.forEach(element => {
+        
             var responsible = element.responsible;
             var existResponsible = false;
             if (allZones[element.responsible] != undefined){

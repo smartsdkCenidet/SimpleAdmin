@@ -53,30 +53,30 @@ def download():
     return response.download(request, db)
 
 def index():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def alerts():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def zoneDelimitation():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def parkingDelimitation():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def roadDelimitation():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def zonesList():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def parkingList():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def roadsList():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 def roadSegmentsList():
-    return dict(smartService = T('https://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
 
 
