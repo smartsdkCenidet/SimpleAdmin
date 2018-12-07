@@ -158,7 +158,7 @@ function save () {
         centerPoint: pointMap,
         location: coordinatesConverted
     };
-    fetch(`${smartService}/api/zone`, {
+    /*fetch(`${smartService}/api/zone`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -175,7 +175,8 @@ function save () {
             alert("Zone save successfully");
             clear();
         }
-    })
+    })*/
+    console.log(JSON.stringify(zone))
     return;
 }
 
