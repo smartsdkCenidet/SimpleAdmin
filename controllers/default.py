@@ -44,6 +44,8 @@ def user():
     return dict(form=auth())
 
 # ---- action to server uploaded static content (required) ---
+smartService = T('http://smartsecurity-webservice.herokuapp.com')
+
 @cache.action()
 def download():
     """
@@ -53,30 +55,30 @@ def download():
     return response.download(request, db)
 
 def index():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def alerts():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def zoneDelimitation():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def parkingDelimitation():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def roadDelimitation():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def zonesList():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def parkingList():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def roadsList():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 def roadSegmentsList():
-    return dict(smartService = T('http://smartsecurity-webservice.herokuapp.com'))
+    return dict(smartService = smartService)
 
 
